@@ -72,18 +72,45 @@ const toast = document.querySelector("#toast");
 const copyButton = document.querySelector("#copy-button");
 const anotherButton = document.querySelector("#another-button");
 const soundButton = document.querySelector(".sound-button");
-
+const coinForm = document.querySelector("#coin-form");
+const coinOptionInputs = [...document.querySelectorAll(".coin-option")];
+const tossButton = document.querySelector("#toss-button");
+const decisionCoin = document.querySelector("#decision-coin");
+const coinResult = document.querySelector("#coin-result");
+const coinResultLine = document.querySelector("#coin-result-line");
+const coinFeedback = document.querySelector("#coin-feedback");
+const coinHint = document.querySelector("#coin-hint");
+const coinReactionButtons = [...document.querySelectorAll(".coin-reaction")];
 let currentIndex = 0;
 let round = 1;
 let soundEnabled = false;
 let audioContext;
 let toastTimer;
 let history = safelyReadHistory();
+let coinIsFlipping = false;
+let activeCoinSide = "heads";
+let activeCoinSelection = "";
+
 
 function safelyReadHistory() {
   try {
-    const saved = JSON.parse(localStorage.getItem("idfk-history"));
-    return Array.isArray(saved) ? saved.slice(0, 6) : [];
+    const saved = JSON.parse(localStorage.getItem("idfk-history") || "null");
+    if (!Array.isArray(saved)) return [];
+
+    return saved.flatMap((entry) => {
+      if (!entry || typeof entry.question !== "string") return [];
+      const savedIndex = entry.promptIndex;
+      const promptIndex = Number.isInteger(savedIndex) && savedIndex >= 0 && savedIndex < prompts.length
+        ? savedIndex
+        : prompts.findIndex((prompt) => prompt.answer === entry.answer);
+      if (promptIndex < 0) return [];
+
+      return [{
+        question: entry.question.slice(0, 140),
+        promptIndex,
+        createdAt: Number.isFinite(entry.createdAt) ? entry.createdAt : Date.now()
+      }];
+    }).slice(0, 6);
   } catch {
     return [];
   }
@@ -120,7 +147,7 @@ function chooseReading() {
 }
 
 function renderHistory() {
-  clearHistoryButton.style.display = history.length ? "block" : "none";
+  clearHistoryButton.hidden = !history.length;
   if (!history.length) {
     historyList.innerHTML = '<li class="empty-state">Your next tiny decision can live here.</li>';
     return;
@@ -129,7 +156,7 @@ function renderHistory() {
   historyList.innerHTML = history.map((entry) => `
     <li class="history-item">
       <p class="history-question">${escapeHtml(entry.question)}</p>
-      <p class="history-answer">${entry.answer}</p>
+      <p class="history-answer">${prompts[entry.promptIndex].answer}</p>
     </li>
   `).join("");
 }
@@ -176,7 +203,7 @@ function offerReading(question, shouldScroll = false) {
   if (question) {
     history.unshift({
       question,
-      answer: reading.answer,
+      promptIndex: currentIndex,
       createdAt: Date.now()
     });
     history = history.slice(0, 6);
@@ -248,6 +275,96 @@ soundButton.addEventListener("click", () => {
     makeTinySound();
     showToast("Tiny sounds are on.");
   }
+});
+
+let coinFlipTimer;
+
+function updateCoinFormState() {
+  const hasBothOptions = coinOptionInputs.every((input) => input.value.trim());
+  tossButton.disabled = coinIsFlipping || !hasBothOptions;
+  if (!coinIsFlipping) {
+    coinHint.textContent = hasBothOptions
+      ? "Both doors are named. Take a breath, then flip."
+      : "Name both doors to wake the coin.";
+  }
+}
+
+coinOptionInputs.forEach((input) => {
+  input.addEventListener("input", () => {
+    coinResult.hidden = true;
+    coinResultLine.textContent = "";
+    coinFeedback.textContent = "";
+    coinReactionButtons.forEach((button) => button.setAttribute("aria-pressed", "false"));
+    updateCoinFormState();
+  });
+});
+
+coinForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (coinIsFlipping) return;
+  const options = coinOptionInputs.map((input) => input.value.trim());
+  const firstEmptyInput = coinOptionInputs.find((input) => !input.value.trim());
+  if (firstEmptyInput) {
+    firstEmptyInput.focus();
+    updateCoinFormState();
+    return;
+  }
+
+  activeCoinSide = Math.random() < 0.5 ? "heads" : "tails";
+  activeCoinSelection = options[activeCoinSide === "heads" ? 0 : 1];
+  const startingAngle = decisionCoin.dataset.side === "tails" ? 180 : 0;
+  const landingAngle = activeCoinSide === "tails" ? 180 : 0;
+  const extraTurn = (landingAngle - startingAngle + 360) % 360;
+  decisionCoin.style.setProperty("--spin-from", `${startingAngle}deg`);
+  decisionCoin.style.setProperty("--spin-to", `${startingAngle + 1440 + extraTurn}deg`);
+
+  coinIsFlipping = true;
+  tossButton.disabled = true;
+  tossButton.setAttribute("aria-busy", "true");
+  coinResult.hidden = true;
+  coinFeedback.textContent = "";
+  coinReactionButtons.forEach((button) => button.setAttribute("aria-pressed", "false"));
+  coinHint.textContent = "A tiny moment of suspense…";
+  decisionCoin.classList.remove("is-flipping");
+  void decisionCoin.offsetWidth;
+  decisionCoin.classList.add("is-flipping");
+  window.clearTimeout(coinFlipTimer);
+  coinFlipTimer = window.setTimeout(finishCoinFlip, 1400);
+});
+
+function finishCoinFlip() {
+  if (!coinIsFlipping) return;
+  window.clearTimeout(coinFlipTimer);
+  coinIsFlipping = false;
+  decisionCoin.classList.remove("is-flipping");
+  decisionCoin.dataset.side = activeCoinSide;
+  const letter = activeCoinSide === "heads" ? "A" : "B";
+  coinResultLine.textContent = `The coin picked ${letter}: ${activeCoinSelection}.`;
+  coinResult.hidden = false;
+  coinHint.textContent = "The coin has had its say. Your first reaction is the interesting part.";
+  tossButton.removeAttribute("aria-busy");
+  updateCoinFormState();
+  makeTinySound();
+}
+
+decisionCoin.addEventListener("animationend", (event) => {
+  if (event.animationName === "coin-flip") finishCoinFlip();
+});
+
+const reactionNotes = {
+  relief: "That little exhale counts as information. You can follow it, or take a little more time.",
+  disappointment: "Interesting. The other door may deserve a closer look — no coin required.",
+  unsure: "Still unsure is allowed. Maybe you need one more piece of information, or simply a little time."
+};
+
+coinReactionButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (coinResult.hidden) return;
+    coinReactionButtons.forEach((reaction) => {
+      reaction.setAttribute("aria-pressed", String(reaction === button));
+    });
+    coinFeedback.textContent = reactionNotes[button.dataset.reaction];
+  });
 });
 
 renderHistory();

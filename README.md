@@ -18,5 +18,9 @@ Then visit `http://localhost:4173`.
 
 - A responsive, keyboard-friendly one-page experience
 - Randomized gentle nudges with a copy-to-clipboard action
+- A two-choice coin flip that turns your first reaction into a gentle gut check
+- A passphrase-locked diary, encrypted in the browser and never uploaded by the app
 - Prompt starters, optional tiny sounds, and motion that respects reduced-motion preferences
-- A six-item localStorage history, with no accounts and no network requests required
+- A six-item localStorage history, with no accounts or backend required
+
+The diary uses browser Web Crypto (PBKDF2 + AES-GCM) to encrypt pages before they are saved. Your passphrase is not recoverable; clearing this site’s browser storage erases the notebook.

@@ -15,8 +15,14 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 html { scroll-behavior: smooth; }
+
+:focus-visible { outline: 2px solid var(--coral-deep); outline-offset: 4px; }
+
+.skip-link { position: fixed; z-index: 30; top: 12px; left: 12px; padding: 11px 14px; color: var(--cream); background: var(--ink); font-family: var(--mono); font-size: 11px; text-decoration: none; transform: translateY(-160%); transition: transform .18s ease; }
+.skip-link:focus { transform: translateY(0); }
 
 body {
   min-width: 320px;
@@ -119,6 +125,52 @@ h1 em { color: var(--coral); font-weight: 600; }
 .another-button span { display: inline-block; margin-left: 4px; color: var(--coral); transition: transform .15s ease; }
 .another-button:hover span { transform: translateX(4px); }
 
+.coin-section { display: grid; grid-template-columns: .78fr 1.22fr; align-items: center; gap: clamp(38px, 7vw, 88px); padding: 88px 0 99px; border-top: 1px solid var(--line); }
+.coin-intro { max-width: 380px; }
+.coin-intro h2 { margin: 19px 0 20px; font-size: clamp(39px, 4.3vw, 58px); }
+.coin-intro h2 em { color: var(--coral); font-weight: 600; }
+.coin-intro-copy { max-width: 345px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.coin-disclaimer { display: flex; align-items: center; gap: 9px; margin: 25px 0 0; color: var(--muted); font-family: var(--mono); font-size: 10px; }
+.coin-disclaimer span { color: var(--coral); font-size: 15px; }
+.coin-workspace { min-width: 0; padding: 24px 25px 17px; border: 1px solid rgba(32, 36, 37, .2); background: rgba(255, 253, 247, .66); box-shadow: 7px 7px 0 var(--blue); }
+.coin-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.coin-option-field { display: grid; min-width: 0; gap: 9px; }
+.option-caption { display: flex; align-items: center; gap: 8px; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .4px; text-transform: uppercase; }
+.option-letter { display: grid; width: 20px; height: 20px; place-items: center; border-radius: 50%; color: var(--ink); background: var(--yellow); font-size: 10px; font-weight: 500; }
+.option-letter-b { background: var(--blue); }
+.coin-option { width: 100%; min-width: 0; height: 48px; padding: 0 12px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: rgba(255, 255, 255, .55); font-size: 14px; }
+.coin-option::placeholder { color: #92938c; opacity: 1; }
+.coin-option:focus { border-color: var(--ink); outline: 2px solid rgba(238, 114, 91, .28); outline-offset: 2px; }
+.coin-controls { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 16px; }
+.coin-toss-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 45px; padding: 0 6px 0 16px; border: 0; border-radius: 999px; color: var(--cream); background: var(--ink); font-size: 12px; font-weight: 600; transition: transform .2s ease, background .2s ease, opacity .2s ease; }
+.coin-toss-button:not(:disabled):hover { transform: translateY(-2px); background: var(--coral-deep); }
+.coin-toss-button:disabled { cursor: not-allowed; opacity: .5; }
+.coin-button-mark { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 50%; color: var(--ink); background: var(--yellow); font-family: var(--serif); font-size: 18px; }
+.coin-stage { display: grid; min-width: 96px; min-height: 96px; place-items: center; perspective: 650px; }
+.coin { position: relative; width: 78px; height: 78px; border-radius: 50%; transform: rotateY(var(--rest-angle, 0deg)); transform-style: preserve-3d; will-change: transform; }
+.coin[data-side="tails"] { --rest-angle: 180deg; }
+.coin-face { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: 1px; border: 2px solid #b48d2e; border-radius: 50%; color: var(--ink); background: linear-gradient(145deg, #f8dc78, var(--yellow)); box-shadow: inset 0 0 0 5px rgba(255, 253, 247, .32), 0 8px 12px rgba(32, 36, 37, .13); backface-visibility: hidden; }
+.coin-face-back { transform: rotateY(180deg); border-color: #568f94; background: linear-gradient(145deg, #b2e0dd, var(--blue)); }
+.coin-face-symbol { color: var(--coral-deep); font-size: 12px; line-height: 1; }
+.coin-face-back .coin-face-symbol { color: #356a70; }
+.coin-face b { font-family: var(--serif); font-size: 23px; line-height: .9; }
+.coin-face small { margin-top: 4px; font-family: var(--mono); font-size: 6px; letter-spacing: 1px; }
+.coin.is-flipping { animation: coin-flip 1.16s cubic-bezier(.18, .72, .24, 1) forwards; }
+@keyframes coin-flip {
+  0% { transform: translateY(0) rotateY(var(--spin-from, 0deg)) rotateZ(0); }
+  43% { transform: translateY(-19px) rotateY(calc(var(--spin-from, 0deg) + 760deg)) rotateZ(-9deg); }
+  100% { transform: translateY(0) rotateY(var(--spin-to, 1440deg)) rotateZ(0); }
+}
+.coin-result { margin-top: 9px; padding-top: 17px; border-top: 1px solid var(--line); }
+.coin-result-line { margin: 0; font-family: var(--serif); font-size: 22px; font-weight: 600; letter-spacing: -.7px; line-height: 1.15; }
+.coin-reflection-question { margin: 8px 0 12px; color: var(--muted); font-size: 12px; }
+.coin-reactions { display: flex; flex-wrap: wrap; gap: 7px; }
+.coin-reaction { padding: 7px 10px; border: 1px solid rgba(32, 36, 37, .23); border-radius: 999px; color: var(--muted); background: transparent; font-family: var(--mono); font-size: 9px; transition: .15s ease; }
+.coin-reaction:hover, .coin-reaction[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: var(--yellow); }
+.coin-feedback { margin: 11px 0 0; color: var(--coral-deep); font-size: 12px; line-height: 1.5; }
+.coin-feedback:empty { display: none; }
+.coin-hint { margin: 8px 0 0; color: var(--muted); font-family: var(--mono); font-size: 9px; line-height: 1.5; }
+
 .notes-section { display: grid; grid-template-columns: .82fr 1.18fr; gap: 72px; padding: 89px 0 97px; border-top: 1px solid var(--line); }
 h2 { margin: 18px 0 0; font-family: var(--serif); font-size: clamp(37px, 4.1vw, 57px); font-weight: 600; letter-spacing: -3.1px; line-height: .99; }
 .notes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; align-items: start; padding-top: 10px; }
@@ -132,10 +184,69 @@ h2 { margin: 18px 0 0; font-family: var(--serif); font-size: clamp(37px, 4.1vw, 
 .note-number { color: rgba(32,36,37,.62); font-family: var(--mono); font-size: 10px; }
 .note p { margin: 39px 0 0; font-family: var(--serif); font-size: 18px; font-weight: 600; letter-spacing: -.7px; line-height: 1.04; }
 
+.diary-section { display: grid; grid-template-columns: .78fr 1.22fr; align-items: start; gap: clamp(38px, 7vw, 88px); padding: 86px 0 96px; border-top: 1px solid var(--line); }
+.diary-intro { max-width: 390px; }
+.diary-intro h2 { margin: 19px 0 20px; }
+.diary-intro > p:last-child { max-width: 340px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.diary-card { min-width: 0; padding: 22px 25px 17px; border: 1px solid rgba(32, 36, 37, .2); background: rgba(255, 253, 247, .74); box-shadow: 7px 7px 0 var(--yellow); }
+.diary-card-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding-bottom: 15px; border-bottom: 1px solid var(--line); }
+.diary-lock-label, .diary-private-mark { display: flex; align-items: center; gap: 7px; margin: 0; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .2px; text-transform: uppercase; }
+.diary-lock-label svg { width: 15px; fill: none; stroke: var(--coral-deep); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.diary-private-mark { color: #8a8b83; text-transform: none; }
+.diary-gate { padding: 25px 0 6px; }
+.diary-gate h3 { margin: 0 0 8px; font-family: var(--serif); font-size: 30px; font-weight: 600; letter-spacing: -1.3px; line-height: 1; }
+.diary-gate-copy { max-width: 490px; margin: 0 0 19px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.diary-gate form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; align-items: end; gap: 11px; }
+.diary-gate form.is-unlocking { grid-template-columns: minmax(0, 1fr) auto; }
+.diary-password-label { display: grid; min-width: 0; gap: 7px; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .3px; text-transform: uppercase; }
+.diary-password-label input { width: 100%; min-width: 0; height: 43px; padding: 0 11px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: #fffefa; font-family: var(--sans); font-size: 14px; letter-spacing: 0; text-transform: none; }
+.diary-password-label input:focus { border-color: var(--ink); outline: 2px solid rgba(238, 114, 91, .26); outline-offset: 2px; }
+.diary-primary-button, .diary-save-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 43px; padding: 0 6px 0 14px; border: 0; border-radius: 999px; color: var(--cream); background: var(--ink); font-size: 11px; font-weight: 600; white-space: nowrap; transition: transform .18s ease, background .18s ease, opacity .18s ease; }
+.diary-primary-button:hover, .diary-save-button:not(:disabled):hover { transform: translateY(-2px); background: var(--coral-deep); }
+.diary-button-mark { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 50%; color: var(--ink); background: var(--yellow); font-family: var(--serif); font-size: 17px; }
+.diary-gate-status, .diary-work-status { min-height: 0; margin: 11px 0 0; color: var(--coral-deep); font-family: var(--mono); font-size: 10px; line-height: 1.5; }
+.diary-gate-status:empty, .diary-work-status:empty { display: none; }
+.diary-lock-note { margin: 12px 0 0; color: #777970; font-size: 10px; line-height: 1.5; }
+.diary-reset-button, .diary-lock-button { padding: 0; border: 0; color: var(--muted); background: transparent; font-family: var(--mono); font-size: 9px; text-decoration: underline; text-decoration-color: var(--coral); text-underline-offset: 4px; }
+.diary-reset-button:hover, .diary-lock-button:hover { color: var(--coral-deep); }
+.diary-reset-button { margin-top: 12px; }
+.diary-unlocked { padding-top: 17px; }
+.diary-toolbar, .diary-toolbar-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.diary-toolbar { margin-bottom: 20px; }
+.diary-toolbar > p { margin: 0; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .4px; text-transform: uppercase; }
+.diary-toolbar-actions { justify-content: flex-end; gap: 15px; }
+.diary-lock-button span { display: inline-block; margin-left: 3px; color: var(--coral); text-decoration: none; }
+.diary-entry-form { padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.diary-entry-label { display: block; margin-bottom: 9px; font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -.6px; }
+.diary-entry-form textarea { display: block; width: 100%; min-height: 132px; resize: vertical; padding: 13px 14px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: #fffefa; font-family: var(--sans); font-size: 14px; line-height: 1.55; }
+.diary-entry-form textarea::placeholder { color: #92938c; opacity: 1; }
+.diary-entry-form textarea:focus { border-color: var(--ink); outline: 2px solid rgba(238, 114, 91, .26); outline-offset: 2px; }
+.diary-entry-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 12px; margin-top: 12px; }
+.diary-mood-label { display: grid; min-width: 0; gap: 7px; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .3px; text-transform: uppercase; }
+.diary-mood-label select { width: 100%; min-width: 0; height: 41px; padding: 0 10px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: #fffefa; font-family: var(--sans); font-size: 12px; text-transform: none; }
+.diary-count { padding-bottom: 13px; color: #8a8b83; font-family: var(--mono); font-size: 9px; white-space: nowrap; }
+.diary-save-button { min-height: 41px; padding: 0 14px; }
+.diary-save-button:disabled { cursor: wait; opacity: .55; }
+.diary-work-status { margin-bottom: 0; }
+.diary-pages-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0 11px; }
+.diary-pages-heading > p { margin: 0; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .4px; text-transform: uppercase; }
+.diary-pages-heading > p span { display: inline-grid; min-width: 19px; height: 19px; place-items: center; margin-left: 4px; border-radius: 50%; color: var(--ink); background: var(--blue); font-size: 9px; }
+.diary-pages-heading .diary-reset-button { margin: 0; }
+.diary-list { display: grid; gap: 9px; padding: 0; margin: 0; list-style: none; }
+.diary-page { padding: 13px 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .43); }
+.diary-page-head { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; flex-wrap: wrap; }
+.diary-page-date { color: var(--muted); font-family: var(--mono); font-size: 9px; }
+.diary-page-mood { padding: 4px 7px; border-radius: 999px; color: #425f60; background: rgba(143, 203, 208, .38); font-family: var(--mono); font-size: 8px; }
+.diary-delete-entry { margin-left: auto; padding: 2px 0 2px 8px; border: 0; color: #85867f; background: transparent; font-family: var(--mono); font-size: 8px; text-decoration: underline; text-decoration-color: rgba(238, 114, 91, .7); text-underline-offset: 3px; }
+.diary-delete-entry:hover { color: var(--coral-deep); }
+.diary-page-text { margin: 0; color: var(--ink); font-size: 13px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.diary-empty { padding: 18px 0 6px; margin: 0; color: var(--muted); font-family: var(--mono); font-size: 10px; text-align: center; }
+.diary-privacy-note { margin: 18px 0 0; color: #777970; font-size: 10px; line-height: 1.55; }
+
 .history-section { padding: 36px 0 105px; border-top: 1px solid var(--line); }
 .history-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 25px; }
 .history-heading h2 { margin-top: 10px; font-size: 39px; }
-.clear-button { display: none; margin-bottom: 5px; color: var(--muted); }
+.clear-button { display: inline-block; margin-bottom: 5px; color: var(--muted); }
 .history-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0; margin: 0; list-style: none; }
 .history-item { min-height: 140px; padding: 17px; border: 1px solid var(--line); background: rgba(255, 253, 247, .4); }
 .history-question { overflow: hidden; margin-bottom: 22px; color: var(--muted); font-family: var(--mono); font-size: 10px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
@@ -173,6 +284,14 @@ h2 { margin: 18px 0 0; font-family: var(--serif); font-size: clamp(37px, 4.1vw, 
   .answer { letter-spacing: -2.7px; }
   .orbit { width: 230px; }
   .orbit-two { width: 260px; }
+  .coin-section { grid-template-columns: 1fr; gap: 30px; padding: 69px 0 75px; }
+  .coin-intro { max-width: 520px; }
+  .coin-intro h2 { margin-bottom: 16px; }
+  .coin-intro-copy { max-width: 440px; }
+  .coin-disclaimer { margin-top: 17px; }
+  .diary-section { grid-template-columns: 1fr; gap: 30px; padding: 69px 0 75px; }
+  .diary-intro { max-width: 520px; }
+  .diary-intro > p:last-child { max-width: 440px; }
   .notes-section { grid-template-columns: 1fr; gap: 38px; padding: 69px 0 72px; }
   .notes-grid { gap: 9px; padding-top: 0; }
   .note { min-height: 166px; padding: 14px 12px; }
@@ -183,10 +302,38 @@ h2 { margin: 18px 0 0; font-family: var(--serif); font-size: clamp(37px, 4.1vw, 
   .site-footer { align-items: flex-start; gap: 17px; flex-direction: column; }
 }
 
+@media (max-width: 560px) {
+  .diary-gate form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .diary-gate form.is-unlocking { grid-template-columns: minmax(0, 1fr); }
+  .diary-primary-button { grid-column: 1 / -1; justify-self: start; }
+  .diary-entry-controls { grid-template-columns: minmax(0, 1fr) auto; }
+  .diary-save-button { grid-column: 1 / -1; justify-self: start; }
+}
+
 @media (max-width: 430px) {
   h1 { font-size: 52px; }
   .quick-asks { gap: 5px; }
   .quick-asks button { padding: 5px 7px; }
+  .coin-section { padding: 61px 0 67px; }
+  .coin-workspace { padding: 18px 16px 14px; }
+  .coin-options { gap: 8px; }
+  .coin-option { height: 44px; padding: 0 9px; font-size: 12px; }
+  .coin-controls { gap: 8px; }
+  .coin-toss-button { min-width: 0; min-height: 42px; gap: 7px; padding-left: 11px; font-size: 10px; }
+  .coin-button-mark { width: 29px; height: 29px; }
+  .coin-stage { min-width: 72px; min-height: 82px; }
+  .coin { width: 68px; height: 68px; }
+  .coin-result-line { font-size: 20px; }
+  .coin-reactions { gap: 5px; }
+  .coin-reaction { padding: 7px 8px; font-size: 8px; }
+  .diary-section { padding: 61px 0 67px; }
+  .diary-card { padding: 18px 16px 14px; }
+  .diary-card-top { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .diary-gate { padding-top: 20px; }
+  .diary-gate form, .diary-gate form.is-unlocking { grid-template-columns: 1fr; }
+  .diary-primary-button { width: 100%; }
+  .diary-toolbar-actions { gap: 9px; }
+  .diary-save-button { width: 100%; justify-content: center; }
   .notes-grid { grid-template-columns: 1fr 1fr; }
   .note:nth-child(3) { margin-top: -2px; grid-column: 1 / 3; min-height: 125px; }
   .note:nth-child(3) p { margin-top: 22px; }
