@@ -1,0 +1,16 @@
+{
+  "name": "ernas-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ERNAS \u2014 voxel sandbox-survival-horror engine base. Non-Euclidean inverted-cylinder world + high-quality Perlin noise.",
+  "scripts": {
+    "test": "node --test",
+    "bench": "node tools/bench.js",
+    "report": "node tools/noise_report.js",
+    "shaders": "node tools/check_shaders.js"
+  },
+  "devDependencies": {
+    "@shaderfrog/glsl-parser": "^7.0.1"
+  }
+}
