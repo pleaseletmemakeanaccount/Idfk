@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f4ed" />
+    <meta
+      name="description"
+      content="IDFK is a tiny, tender decision machine for the beautifully undecided."
+    />
+    <title>IDFK — a decision machine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="paper-noise" aria-hidden="true"></div>
+    <header class="site-header shell">
+      <a class="wordmark" href="#top" aria-label="IDFK home">idfk<span>?</span></a>
+      <div class="header-right">
+        <p class="status"><i></i> exquisitely undecided</p>
+        <button class="sound-button" type="button" aria-pressed="false" aria-label="Toggle tiny sounds">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"></path><path class="sound-wave" d="M16 9.5a4 4 0 0 1 0 5M18.5 7a7.5 7.5 0 0 1 0 10"></path></svg>
+          <span>sound off</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero shell" aria-labelledby="hero-title">
+        <p class="eyebrow"><span></span> decision support for humans with tabs open</p>
+        <h1 id="hero-title">A little clarity<br />for your <em>big maybe.</em></h1>
+        <p class="hero-copy">
+          Tell the machine what is orbiting your brain. It will give you a nudge — never a decree.
+        </p>
+
+        <form class="question-form" id="question-form">
+          <label class="sr-only" for="question">What are you deciding?</label>
+          <div class="input-wrap">
+            <span class="input-spark" aria-hidden="true">✦</span>
+            <input
+              id="question"
+              name="question"
+              maxlength="140"
+              autocomplete="off"
+              placeholder="Should I text them? Quit? Order dessert?"
+              required
+            />
+            <span class="char-count" id="char-count">0 / 140</span>
+          </div>
+          <div class="form-footer">
+            <div class="quick-asks" aria-label="Try a suggestion">
+              <button type="button" data-prompt="Should I send the message?">send it?</button>
+              <button type="button" data-prompt="Should I say yes to the plan?">say yes?</button>
+              <button type="button" data-prompt="Should I begin before I feel ready?">begin now?</button>
+            </div>
+            <button class="ask-button" type="submit">
+              <span>ask the void</span>
+              <span class="button-orb" aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="reading-section shell" aria-live="polite" aria-labelledby="reading-title">
+        <div class="reading-meta">
+          <p class="eyebrow"><span></span> your gentle nudge</p>
+          <p class="round-label">reading <b id="round-number">01</b> / ∞</p>
+        </div>
+
+        <article class="reading-card" id="reading-card">
+          <div class="card-topline">
+            <p id="card-label">the default setting</p>
+            <span class="card-mark" aria-hidden="true">✳</span>
+          </div>
+          <div class="card-center">
+            <div class="orbit orbit-one" aria-hidden="true"></div>
+            <div class="orbit orbit-two" aria-hidden="true"></div>
+            <p class="answer" id="answer">Start <em>smaller.</em></p>
+            <p class="answer-detail" id="answer-detail">You do not need a five-year plan to make a ten-minute move.</p>
+          </div>
+          <div class="card-bottomline">
+            <p id="card-signoff">trust the first kind step</p>
+            <button class="copy-button" id="copy-button" type="button" aria-label="Copy this nudge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="1"></rect><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path></svg>
+              <span>copy</span>
+            </button>
+          </div>
+        </article>
+
+        <div class="under-card">
+          <p><span class="asterisk">✱</span> not wisdom. just a well-timed mirror.</p>
+          <button class="another-button" id="another-button" type="button">give me another <span>→</span></button>
+        </div>
+      </section>
+
+      <section class="notes-section shell" aria-labelledby="notes-title">
+        <div class="notes-heading">
+          <p class="eyebrow"><span></span> field notes</p>
+          <h2 id="notes-title">You already know<br />more than you think.</h2>
+        </div>
+        <div class="notes-grid">
+          <article class="note note-coral">
+            <span class="note-number">01</span>
+            <p>Confusion is often a feeling asking for a quieter room.</p>
+          </article>
+          <article class="note note-blue">
+            <span class="note-number">02</span>
+            <p>A no can be kind. A yes can be revised. Both are allowed.</p>
+          </article>
+          <article class="note note-yellow">
+            <span class="note-number">03</span>
+            <p>The next true thing is usually more useful than the perfect thing.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="history-section shell" id="history-section" aria-labelledby="history-title">
+        <div class="history-heading">
+          <div>
+            <p class="eyebrow"><span></span> today’s breadcrumbs</p>
+            <h2 id="history-title">Past nudges</h2>
+          </div>
+          <button id="clear-history" class="clear-button" type="button">clear all</button>
+        </div>
+        <ol class="history-list" id="history-list">
+          <li class="empty-state">Your next tiny decision can live here.</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="site-footer shell">
+      <p>made for the moment between <span>“hmm”</span> and <span>“okay.”</span></p>
+      <p class="footer-mark">idfk? <b>✦</b> 2026</p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Copied to your clipboard.</div>
+    <script src="script.js"></script>
+  </body>
+</html>
