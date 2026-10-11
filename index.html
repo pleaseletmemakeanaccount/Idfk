@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <div class="paper-noise" aria-hidden="true"></div>
     <header class="site-header shell">
       <a class="wordmark" href="#top" aria-label="IDFK home">idfk<span>?</span></a>
@@ -30,8 +31,8 @@
       </div>
     </header>
 
-    <main id="top">
-      <section class="hero shell" aria-labelledby="hero-title">
+    <main id="main">
+      <section class="hero shell" id="top" aria-labelledby="hero-title">
         <p class="eyebrow"><span></span> decision support for humans with tabs open</p>
         <h1 id="hero-title">A little clarity<br />for your <em>big maybe.</em></h1>
         <p class="hero-copy">
@@ -98,6 +99,63 @@
         </div>
       </section>
 
+      <section class="coin-section shell" aria-labelledby="coin-title">
+        <div class="coin-intro">
+          <p class="eyebrow"><span></span> the tiniest experiment</p>
+          <h2 id="coin-title">Two doors.<br />One little <em>coin.</em></h2>
+          <p class="coin-intro-copy">
+            Give both paths a name and let chance make the first move. Then notice which result you were hoping for.
+          </p>
+          <p class="coin-disclaimer"><span aria-hidden="true">✳</span> Not a verdict. A vibe check.</p>
+        </div>
+
+        <form class="coin-workspace" id="coin-form">
+          <div class="coin-options">
+            <label class="coin-option-field" for="coin-option-a">
+              <span class="option-caption"><span class="option-letter">A</span> first door</span>
+              <input class="coin-option" id="coin-option-a" name="option-a" maxlength="54" autocomplete="off" placeholder="stay in" required />
+            </label>
+            <label class="coin-option-field" for="coin-option-b">
+              <span class="option-caption"><span class="option-letter option-letter-b">B</span> second door</span>
+              <input class="coin-option" id="coin-option-b" name="option-b" maxlength="54" autocomplete="off" placeholder="head out" required />
+            </label>
+          </div>
+
+          <div class="coin-controls">
+            <button class="coin-toss-button" id="toss-button" type="submit" disabled>
+              <span>flip for a feeling</span>
+              <span class="coin-button-mark" aria-hidden="true">↗</span>
+            </button>
+            <div class="coin-stage" aria-hidden="true">
+              <div class="coin" id="decision-coin">
+                <div class="coin-face coin-face-front">
+                  <span class="coin-face-symbol">✳</span>
+                  <b>A</b>
+                  <small>HEADS</small>
+                </div>
+                <div class="coin-face coin-face-back">
+                  <span class="coin-face-symbol">✴</span>
+                  <b>B</b>
+                  <small>TAILS</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="coin-result" id="coin-result" hidden>
+            <p class="coin-result-line" id="coin-result-line" role="status" aria-live="polite"></p>
+            <p class="coin-reflection-question">What was your first reaction?</p>
+            <div class="coin-reactions" role="group" aria-label="How did the coin result feel?">
+              <button class="coin-reaction" type="button" data-reaction="relief" aria-pressed="false">a little relief</button>
+              <button class="coin-reaction" type="button" data-reaction="disappointment" aria-pressed="false">aw, the other one</button>
+              <button class="coin-reaction" type="button" data-reaction="unsure" aria-pressed="false">still unsure</button>
+            </div>
+            <p class="coin-feedback" id="coin-feedback" aria-live="polite"></p>
+          </div>
+          <p class="coin-hint" id="coin-hint" aria-live="polite">Name both doors to wake the coin.</p>
+        </form>
+      </section>
+
       <section class="notes-section shell" aria-labelledby="notes-title">
         <div class="notes-heading">
           <p class="eyebrow"><span></span> field notes</p>
@@ -119,13 +177,90 @@
         </div>
       </section>
 
+      <section class="diary-section shell" aria-labelledby="diary-title">
+        <div class="diary-intro">
+          <p class="eyebrow"><span></span> a softer kind of record</p>
+          <h2 id="diary-title">Leave a note<br />for yourself.</h2>
+          <p>Not every thought needs an answer. Some just need somewhere safe to land.</p>
+        </div>
+
+        <div class="diary-card">
+          <div class="diary-card-top">
+            <p class="diary-lock-label">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path></svg>
+              encrypted on this device
+            </p>
+            <span class="diary-private-mark">no account · no cloud</span>
+          </div>
+
+          <div class="diary-gate" id="diary-gate">
+            <h3 id="diary-gate-title">Start a private notebook</h3>
+            <p class="diary-gate-copy" id="diary-gate-copy">Choose a passphrase only you know. Your words are encrypted in this browser; they never leave this device.</p>
+            <form id="diary-gate-form">
+              <label class="diary-password-label" for="diary-passphrase">your passphrase
+                <input id="diary-passphrase" type="password" minlength="8" maxlength="128" autocomplete="new-password" required />
+              </label>
+              <div class="diary-confirm-row" id="diary-confirm-row">
+                <label class="diary-password-label" for="diary-passphrase-confirm">one more time
+                  <input id="diary-passphrase-confirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required />
+                </label>
+              </div>
+              <button class="diary-primary-button" id="diary-gate-button" type="submit">
+                <span>create the notebook</span><span class="diary-button-mark" aria-hidden="true">↗</span>
+              </button>
+            </form>
+            <button class="diary-reset-button" id="diary-forget-button" type="button" hidden>forgot your passphrase? erase this notebook</button>
+            <p class="diary-gate-status" id="diary-gate-status" role="status" aria-live="polite"></p>
+            <p class="diary-lock-note">No password reset exists. Forget the passphrase and the pages stay locked.</p>
+          </div>
+
+          <div class="diary-unlocked" id="diary-unlocked" hidden>
+            <div class="diary-toolbar">
+              <p>the room is yours</p>
+              <div class="diary-toolbar-actions">
+                <button class="diary-reset-button" id="diary-erase-button" type="button">erase notebook</button>
+                <button class="diary-lock-button" id="diary-lock-button" type="button">lock it <span aria-hidden="true">↗</span></button>
+              </div>
+            </div>
+
+            <form class="diary-entry-form" id="diary-entry-form">
+              <label class="diary-entry-label" for="diary-text">What’s on your mind?</label>
+              <textarea id="diary-text" maxlength="1400" rows="5" placeholder="It doesn’t have to make sense yet…" required></textarea>
+              <div class="diary-entry-controls">
+                <label class="diary-mood-label" for="diary-mood">weather inside
+                  <select id="diary-mood">
+                    <option value="just noticing">just noticing</option>
+                    <option value="hopeful">hopeful</option>
+                    <option value="tender">tender</option>
+                    <option value="restless">restless</option>
+                    <option value="tired">tired</option>
+                    <option value="proud">a little proud</option>
+                  </select>
+                </label>
+                <span class="diary-count" id="diary-count">0 / 1400</span>
+                <button class="diary-save-button" id="diary-save-button" type="submit">save this thought <span aria-hidden="true">↗</span></button>
+              </div>
+            </form>
+
+            <p class="diary-work-status" id="diary-work-status" role="status" aria-live="polite"></p>
+            <div class="diary-pages-heading">
+              <p>your pages <span id="diary-entry-count">0</span></p>
+              <button class="diary-reset-button" id="diary-clear-button" type="button" hidden>erase all pages</button>
+            </div>
+            <ol class="diary-list" id="diary-list"></ol>
+            <p class="diary-empty" id="diary-empty">Nothing here yet. A blank page is a place too.</p>
+          </div>
+          <p class="diary-privacy-note">Encrypted before saving; your passphrase is never stored. Clearing this browser’s site data erases the notebook. Anyone who can use an open session can read it, so lock it when you step away.</p>
+        </div>
+      </section>
+
       <section class="history-section shell" id="history-section" aria-labelledby="history-title">
         <div class="history-heading">
           <div>
             <p class="eyebrow"><span></span> today’s breadcrumbs</p>
             <h2 id="history-title">Past nudges</h2>
           </div>
-          <button id="clear-history" class="clear-button" type="button">clear all</button>
+          <button id="clear-history" class="clear-button" type="button" hidden>clear all</button>
         </div>
         <ol class="history-list" id="history-list">
           <li class="empty-state">Your next tiny decision can live here.</li>
@@ -140,5 +275,6 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite">Copied to your clipboard.</div>
     <script src="script.js"></script>
+    <script src="diary.js"></script>
   </body>
 </html>
